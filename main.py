@@ -27,8 +27,8 @@ def get_real_time():
 # Configure
 c = twint.Config()
 # c.Database = "covid.db"
-c.Search = "ukraine OR russia OR russian invasion OR ukraine war OR russian war OR zelensky OR putin OR vladimir putin OR volodymyr zelensky OR ukraine russia OR defence of ukraine"
-
+# c.Search = "ukraine OR russia OR russian invasion OR ukraine war OR russian war OR zelensky OR putin OR vladimir putin OR volodymyr zelensky OR ukraine russia OR defence of ukraine"
+c.Search = "Украина"
 # c.Search = "corona"
 # c.Search = "Sputnik OR gamaleya vaccine OR Sputnik V"
 # c.Search = "Sinopharm OR Sinopharm OR Sinopharm vaccine OR Sinopharm BIBP"
@@ -54,7 +54,7 @@ c.TranslateDest = "en"
 c.Count = True
 c.Store_csv = True
 c.Store_object = True
-c.Output = "war-geotest.csv"
+c.Output = "war-russian.csv"
 
 
 # Run

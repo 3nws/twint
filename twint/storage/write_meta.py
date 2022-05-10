@@ -92,6 +92,8 @@ def tweetData(t):
     user = next((user for user in twint.output.users_list if str(user.id) == str(t.user_id)), None)
     user_location = user.location if user is not None else "-"
     
+    processed_translation = preprocess_tweets(t.translate)
+    
     data = {
             # "id": int(t.id),
             # "conversation_id": t.conversation_id,
@@ -130,7 +132,7 @@ def tweetData(t):
             # "retweet_id": t.retweet_id,
             # "reply_to": t.reply_to,
             # "retweet_date": t.retweet_date,
-            "translate": t.translate,
+            "translate": processed_translation,
             "trans_src": t.trans_src,
             "trans_dest": t.trans_dest,
             }
