@@ -4,13 +4,14 @@ from nltk.corpus import stopwords
 import re             
 import string 
 import nltk
-import twint
 import nest_asyncio
+import async_google_trans_new
+g = async_google_trans_new.AsyncTranslator()
 nest_asyncio.apply()
 # __import__('IPython').embed()
 
 from nltk.stem.snowball import SnowballStemmer
-from nltk.tokenize import TweetTokenizer, RegexpTokenizer
+from nltk.tokenize import RegexpTokenizer
 
 nltk.download('stopwords')
 
@@ -83,55 +84,56 @@ def tweetData(t):
     
     will_be_removed = len(tweet_processed.split(' ')) < 3
     
-    c = twint.Config()
-    c.User_id = t.user_id
-    c.Store_object = True
-    c.User_full = True
+    
+    # c = twint.Config()
+    # c.User_id = t.user_id
+    # c.Store_object = True
+    # c.User_full = True
 
-    twint.run.Lookup(c)
-    user = next((user for user in twint.output.users_list if str(user.id) == str(t.user_id)), None)
-    user_location = user.location if user is not None else "-"
+    # twint.run.Lookup(c)
+    # user = next((user for user in twint.output.users_list if str(user.id) == str(t.user_id)), None)
+    # user_location = user.location if user is not None else "-"
     
     processed_translation = preprocess_tweets(t.translate)
     
     data = {
-            # "id": int(t.id),
-            # "conversation_id": t.conversation_id,
-            # "created_at": t.datetime,
-            # "date": t.datestamp,
-            # "time": t.timestamp,
-            # "timezone": t.timezone,
-            # "user_id": t.user_id,
+            "id": int(t.id),
+            "conversation_id": t.conversation_id,
+            "created_at": t.datetime,
+            "date": t.datestamp,
+            "time": t.timestamp,
+            "timezone": t.timezone,
+            "user_id": t.user_id,
             "username": t.username,
-            # "name": t.name,
-            # "place": t.place,
+            "name": t.name,
+            "place": t.place,
             "tweet": tweet_processed if not will_be_removed else "",
             "OriginalTweet": t.tweet,
             "sentiment": 2,
             "language": t.lang,
             "userid": t.user_id,
             "location": user_location,
-            # "mentions": t.mentions,
-            # "urls": t.urls,
-            # "photos": t.photos,
-            # "replies_count": int(t.replies_count),
-            # "retweets_count": int(t.retweets_count),
-            # "likes_count": int(t.likes_count),
-            # "hashtags": t.hashtags,
-            # "cashtags": t.cashtags,
-            # "link": t.link,
-            # "retweet": t.retweet,
-            # "quote_url": t.quote_url,
-            # "video": t.video,
-            # "thumbnail": t.thumbnail,
-            # "near": t.near,
-            # "geo": t.geo,
-            # "source": t.source,
-            # "user_rt_id": t.user_rt_id,
-            # "user_rt": t.user_rt,
-            # "retweet_id": t.retweet_id,
-            # "reply_to": t.reply_to,
-            # "retweet_date": t.retweet_date,
+            "mentions": t.mentions,
+            "urls": t.urls,
+            "photos": t.photos,
+            "replies_count": int(t.replies_count),
+            "retweets_count": int(t.retweets_count),
+            "likes_count": int(t.likes_count),
+            "hashtags": t.hashtags,
+            "cashtags": t.cashtags,
+            "link": t.link,
+            "retweet": t.retweet,
+            "quote_url": t.quote_url,
+            "video": t.video,
+            "thumbnail": t.thumbnail,
+            "near": t.near,
+            "geo": t.geo,
+            "source": t.source,
+            "user_rt_id": t.user_rt_id,
+            "user_rt": t.user_rt,
+            "retweet_id": t.retweet_id,
+            "reply_to": t.reply_to,
+            "retweet_date": t.retweet_date,
             "translate": processed_translation,
             "trans_src": t.trans_src,
             "trans_dest": t.trans_dest,
@@ -140,43 +142,43 @@ def tweetData(t):
 
 def tweetFieldnames():
     fieldnames = [
-            # "id",
-            # "conversation_id",
-            # "created_at",
-            # "date",
-            # "time",
-            # "timezone",
-            # "user_id",
+            "id",
+            "conversation_id",
+            "created_at",
+            "date",
+            "time",
+            "timezone",
+            "user_id",
             "username",
-            # "name",
-            # "place",
+            "name",
+            "place",
             "tweet",
             "OriginalTweet",
             "sentiment",
             "language",
             "userid",
             "location",
-            # "mentions",
-            # "urls",
-            # "photos",
-            # "replies_count",
-            # "retweets_count",
-            # "likes_count",
-            # "hashtags",
-            # "cashtags",
-            # "link",
-            # "retweet",
-            # "quote_url",
-            # "video",
-            # "thumbnail",
-            # "near",
-            # "geo",
-            # "source",
-            # "user_rt_id",
-            # "user_rt",
-            # "retweet_id",
-            # "reply_to",
-            # "retweet_date",
+            "mentions",
+            "urls",
+            "photos",
+            "replies_count",
+            "retweets_count",
+            "likes_count",
+            "hashtags",
+            "cashtags",
+            "link",
+            "retweet",
+            "quote_url",
+            "video",
+            "thumbnail",
+            "near",
+            "geo",
+            "source",
+            "user_rt_id",
+            "user_rt",
+            "retweet_id",
+            "reply_to",
+            "retweet_date",
             "translate",
             "trans_src",
             "trans_dest"
@@ -186,44 +188,44 @@ def tweetFieldnames():
 def userData(u):
     data = {
             "id": int(u.id),
-            # "name": u.name,
+            "name": u.name,
             "username": u.username,
-            # "bio": u.bio,
+            "bio": u.bio,
             "location": u.location,
-            # "url": u.url,
-            # "join_date": u.join_date,
-            # "join_time": u.join_time,
-            # "tweets": int(u.tweets),
-            # "following": int(u.following),
-            # "followers": int(u.followers),
-            # "likes": int(u.likes),
-            # "media": int(u.media_count),
-            # "private": u.is_private,
-            # "verified": u.is_verified,
-            # "profile_image_url": u.avatar,
-            # "background_image": u.background_image
+            "url": u.url,
+            "join_date": u.join_date,
+            "join_time": u.join_time,
+            "tweets": int(u.tweets),
+            "following": int(u.following),
+            "followers": int(u.followers),
+            "likes": int(u.likes),
+            "media": int(u.media_count),
+            "private": u.is_private,
+            "verified": u.is_verified,
+            "profile_image_url": u.avatar,
+            "background_image": u.background_image
             }
     return data
 
 def userFieldnames():
     fieldnames = [
             "id",
-            # "name",
+            "name",
             "username",
-            # "bio",
+            "bio",
             "location",
-            # "url",
-            # "join_date",
-            # "join_time",
-            # "tweets",
-            # "following",
-            # "followers",
-            # "likes",
-            # "media",
-            # "private",
-            # "verified",
-            # "profile_image_url",
-            # "background_image"
+            "url",
+            "join_date",
+            "join_time",
+            "tweets",
+            "following",
+            "followers",
+            "likes",
+            "media",
+            "private",
+            "verified",
+            "profile_image_url",
+            "background_image"
             ]
     return fieldnames
 
