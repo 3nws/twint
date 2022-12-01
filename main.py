@@ -24,12 +24,11 @@ def get_real_time():
 
     return date_format
 
-async def main():
+def main():
     c = twint.Config()
-    g = async_google_trans_new.AsyncTranslator()
+    # g = async_google_trans_new.AsyncTranslator()
 
-    keywords = """ukraine OR kiev OR kyiv OR chernobyl OR ukrainian forces OR disinformation OR bomb OR shell OR missile OR assault OR airstrikes OR incursion OR artillery OR war OR warheads OR sanction OR 
-    ukraine OR russia OR russian invasion OR ukraine war OR russian war OR zelensky OR putin OR vladimir putin OR volodymyr zelensky OR ukraine russia OR defence of ukraine"""
+    keywords = """corona"""
 
     # c.Search = keywords
     # c.Since = "2022-2-24"
@@ -275,15 +274,19 @@ async def main():
     #     tls.append(await g.translate(word, "be"))
     # keywords_be = " OR ".join(tls)
     # print(keywords_be)
-    # c.Search = keywords_be
-    # c.Since = "2022-2-24"
-    # c.Lang = "be"
+    c.Search = keywords
+    c.Since = "2020-2-24"
+    c.Lang = "en"
     # c.Translate = True
     # c.TranslateDest = "en"
-    # c.Store_csv = True
-    # c.Output = "war-belarusian.csv"
+    c.Store_csv = True
+    c.Limit = 100
+    c.Output = "test.csv"
 
     
     twint.run.Search(c)
     
-asyncio.run(main())
+# asyncio.run(main())
+
+if __name__ == "__main__":
+    main()

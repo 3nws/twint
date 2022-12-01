@@ -1,88 +1,86 @@
-import string
-import re
-from nltk.corpus import stopwords
-import re             
-import string 
-import nltk
-import nest_asyncio
-import async_google_trans_new
-g = async_google_trans_new.AsyncTranslator()
-nest_asyncio.apply()
+# import string
+# import re
+# from nltk.corpus import stopwords
+# import nltk
+# import nest_asyncio
+# import async_google_trans_new
+# g = async_google_trans_new.AsyncTranslator()
+# nest_asyncio.apply()
 # __import__('IPython').embed()
 
-from nltk.stem.snowball import SnowballStemmer
-from nltk.tokenize import RegexpTokenizer
+# from nltk.stem.snowball import SnowballStemmer
+# from nltk.tokenize import RegexpTokenizer
 
-nltk.download('stopwords')
+# nltk.download('stopwords')
 
-stemmer = SnowballStemmer("english", ignore_stopwords=True)
-token = RegexpTokenizer(r'[a-zA-Z0-9]+')
+# stemmer = SnowballStemmer("english", ignore_stopwords=True)
+# token = RegexpTokenizer(r'[a-zA-Z0-9]+')
 
 
 # Preprocessing
 
-RE_EMOJI = re.compile('[\U00010000-\U0010ffff]', flags=re.UNICODE)
+# RE_EMOJI = re.compile('[\U00010000-\U0010ffff]', flags=re.UNICODE)
 
 
-def strip_emoji(text):
-    return RE_EMOJI.sub(r'', text)
+# def strip_emoji(text):
+#     return RE_EMOJI.sub(r'', text)
 
-def remove_URL(text):
-    url = re.compile(r"https?://\S+|www\.\S+")
-    return url.sub(r"", text)
-
-
-def remove_punct(text):
-    translator = str.maketrans("", "", string.punctuation)
-    return text.translate(translator)
+# def remove_URL(text):
+#     url = re.compile(r"https?://\S+|www\.\S+")
+#     return url.sub(r"", text)
 
 
-def remove_mention(text):
-    return re.sub("@[A-Za-z0-9]+", "", text)
+# def remove_punct(text):
+#     translator = str.maketrans("", "", string.punctuation)
+#     return text.translate(translator)
 
 
-def stem_tweets(tweet):
-    tokens = tweet.split()
-    stemmed_tokens = [stemmer.stem(token) for token in tokens]
-    return ' '.join(stemmed_tokens)
+# def remove_mention(text):
+#     return re.sub("@[A-Za-z0-9]+", "", text)
 
 
-def lemmatize_tweets(tweet):
-    tokens = tweet.split()
-    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
-    return ' '.join(lemmatized_tokens)
+# def stem_tweets(tweet):
+#     tokens = tweet.split()
+#     stemmed_tokens = [stemmer.stem(token) for token in tokens]
+#     return ' '.join(stemmed_tokens)
+
+
+# def lemmatize_tweets(tweet):
+#     tokens = tweet.split()
+#     lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
+#     return ' '.join(lemmatized_tokens)
 
 # remove stopwords
 
 
-stop = set(stopwords.words("english"))
+# stop = set(stopwords.words("english"))
 
 
-def remove_stopwords(text):
-    stop = set(stopwords.words("english"))
+# def remove_stopwords(text):
+#     stop = set(stopwords.words("english"))
 
-    filtered_words = [word.lower()
-                      for word in text.split() if word.lower() not in stop]
-    return " ".join(filtered_words)
+#     filtered_words = [word.lower()
+#                       for word in text.split() if word.lower() not in stop]
+#     return " ".join(filtered_words)
 
 
-def preprocess_tweets(tweet):
-    tweet = strip_emoji(tweet)
-    tweet = remove_mention(tweet)
-    tweet = remove_URL(tweet)
-    tweet = remove_punct(tweet)
-    tweet = stem_tweets(tweet)
-    # tweet = lemmatize_tweets(tweet)
-    tweet = remove_stopwords(tweet)
-    return tweet
+# def preprocess_tweets(tweet):
+#     tweet = strip_emoji(tweet)
+#     tweet = remove_mention(tweet)
+#     tweet = remove_URL(tweet)
+#     tweet = remove_punct(tweet)
+#     tweet = stem_tweets(tweet)
+#     # tweet = lemmatize_tweets(tweet)
+#     tweet = remove_stopwords(tweet)
+#     return tweet
 
 def tweetData(t):
     t.tweet = t.tweet.lower()
     
     # pre-processing
-    tweet_processed = preprocess_tweets(t.tweet)
+    # tweet_processed = preprocess_tweets(t.tweet)
     
-    will_be_removed = len(tweet_processed.split(' ')) < 3
+    # will_be_removed = len(tweet_processed.split(' ')) < 3
     
     
     # c = twint.Config()
@@ -94,7 +92,7 @@ def tweetData(t):
     # user = next((user for user in twint.output.users_list if str(user.id) == str(t.user_id)), None)
     # user_location = user.location if user is not None else "-"
     
-    processed_translation = preprocess_tweets(t.translate)
+    # processed_translation = preprocess_tweets(t.translate)
     
     data = {
             "id": int(t.id),
@@ -107,12 +105,13 @@ def tweetData(t):
             "username": t.username,
             "name": t.name,
             "place": t.place,
-            "tweet": tweet_processed if not will_be_removed else "",
+            # "tweet": tweet_processed if not will_be_removed else "",
+            "tweet": t.tweet,
             "OriginalTweet": t.tweet,
             "sentiment": 2,
             "language": t.lang,
             "userid": t.user_id,
-            "location": user_location,
+            # "location": user_location,
             "mentions": t.mentions,
             "urls": t.urls,
             "photos": t.photos,
@@ -134,7 +133,7 @@ def tweetData(t):
             "retweet_id": t.retweet_id,
             "reply_to": t.reply_to,
             "retweet_date": t.retweet_date,
-            "translate": processed_translation,
+            # "translate": processed_translation,
             "trans_src": t.trans_src,
             "trans_dest": t.trans_dest,
             }
